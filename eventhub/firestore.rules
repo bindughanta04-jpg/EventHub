@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isAdmin() { return signedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'; }
+
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      // students can only create their own profile as an active student
+      allow create: if request.auth.uid == uid && request.resource.data.role == 'student' && request.resource.data.status == 'active';
+      // students may edit only name, phone, dept
+      allow update: if isAdmin() || (request.auth.uid == uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name','phone','dept']));
+      allow delete: if isAdmin();
+    }
+    // one doc per roll number = unique roll numbers (a doc can only be created once)
+    match /rollNumbers/{roll} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow delete: if isAdmin();
+    }
+    match /events/{id} {
+      allow read: if signedIn();
+      allow create, delete: if isAdmin();
+      // students may only change the seat counter
+      allow update: if isAdmin() || (signedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['registeredCount']));
+    }
+    // doc id = eventId_uid = one registration per student per event
+    match /registrations/{rid} {
+      allow read: if signedIn() && (resource.data.uid == request.auth.uid || isAdmin());
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid && rid == request.resource.data.eventId + '_' + request.auth.uid;
+      allow update: if isAdmin();
+      allow delete: if isAdmin() || resource.data.uid == request.auth.uid;
+    }
+  }
+}

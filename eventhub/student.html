@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student | EventHub</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head><body>
+<div class="shell">
+  <aside class="side">
+    <a class="brand mb-4" href="#"><i class="bi bi-ticket-perforated-fill"></i>EventHub</a>
+    <button class="nv active" data-go="dash"><i class="bi bi-grid-1x2-fill"></i>Dashboard</button>
+    <button class="nv" data-go="events"><i class="bi bi-calendar-event-fill"></i>Browse events</button>
+    <button class="nv" data-go="mine"><i class="bi bi-ticket-detailed-fill"></i>My passes</button>
+    <button class="nv" data-go="profile"><i class="bi bi-person-fill"></i>Profile</button>
+    <div class="me"><div class="d-flex gap-2 align-items-center mb-3"><div class="avatar" id="av"></div><div style="min-width:0"><div class="fw-bold text-truncate" id="meName"></div><div class="small mut" id="meRoll"></div></div></div><button class="btn btn-ghost w-100 btn-sm" id="out"><i class="bi bi-box-arrow-right me-1"></i>Log out</button></div>
+  </aside>
+  <main>
+    <section class="sec show" id="sec-dash">
+      <h2 class="rise">Hi, <span class="grad" id="hi"></span></h2><p class="mut rise" style="--i:1">Here is what is happening with your events.</p>
+      <div class="row g-3 my-2" id="kpis"></div>
+      <h5 class="mt-4 mb-3">Your next event</h5><div id="next"></div>
+    </section>
+    <section class="sec" id="sec-events">
+      <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3"><h2 class="m-0">Browse events</h2>
+        <div class="d-flex gap-2"><input id="q" class="form-control" placeholder="Search events..."><select id="cf" class="form-select"><option value="">All categories</option></select></div></div>
+      <div class="row g-3" id="evList"></div>
+    </section>
+    <section class="sec" id="sec-mine"><h2 class="mb-3">My passes</h2><div class="row g-3" id="mineList"></div></section>
+    <section class="sec" id="sec-profile"><h2 class="mb-3">Profile</h2>
+      <form id="pf" class="glass p-4" style="max-width:640px" novalidate><div class="row g-3">
+        <div class="col-md-6"><label class="form-label">Full name</label><input id="p-name" class="form-control"></div>
+        <div class="col-md-6"><label class="form-label">Mobile</label><input id="p-phone" maxlength="10" class="form-control"></div>
+        <div class="col-md-6"><label class="form-label">Email (locked)</label><input id="p-email" class="form-control" disabled></div>
+        <div class="col-md-6"><label class="form-label">Roll number (locked)</label><input id="p-roll" class="form-control" disabled></div>
+        <div class="col-12"><label class="form-label">Department</label><select id="p-dept" class="form-select"><option>CSE</option><option>IT</option><option>ECE</option><option>EEE</option><option>MECH</option><option>CIVIL</option><option>MBA</option><option>Other</option></select></div>
+      </div><button class="btn btn-glow mt-4">Save changes</button></form>
+    </section>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="js/student.js"></script>
+</body></html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin | EventHub</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head><body>
+<div class="shell">
+  <aside class="side">
+    <a class="brand mb-4" href="#"><i class="bi bi-ticket-perforated-fill"></i>EventHub</a>
+    <button class="nv active" data-go="dash"><i class="bi bi-bar-chart-line-fill"></i>Analytics</button>
+    <button class="nv" data-go="events"><i class="bi bi-calendar-event-fill"></i>Events</button>
+    <button class="nv" data-go="students"><i class="bi bi-people-fill"></i>Students</button>
+    <button class="nv" data-go="regs"><i class="bi bi-clipboard-check-fill"></i>Registrations</button>
+    <div class="me"><div class="d-flex gap-2 align-items-center mb-3"><div class="avatar" id="av"></div><div style="min-width:0"><div class="fw-bold text-truncate" id="meName"></div><div class="small mut">Administrator</div></div></div><button class="btn btn-ghost w-100 btn-sm" id="out"><i class="bi bi-box-arrow-right me-1"></i>Log out</button></div>
+  </aside>
+  <main>
+    <section class="sec show" id="sec-dash">
+      <h2 class="rise">Analytics</h2><p class="mut rise" style="--i:1">Live numbers across events and students.</p>
+      <div class="row g-3 mb-3" id="kpis"></div>
+      <div class="row g-3">
+        <div class="col-lg-7"><div class="glass p-3 h-100"><h6>Registrations per event</h6><canvas id="c1" height="150"></canvas></div></div>
+        <div class="col-lg-5"><div class="glass p-3 h-100"><h6>Events by category</h6><canvas id="c2" height="190"></canvas></div></div>
+        <div class="col-lg-7"><div class="glass p-3 h-100"><h6>New students, last 7 days</h6><canvas id="c3" height="130"></canvas></div></div>
+        <div class="col-lg-5"><div class="glass p-3 h-100"><h6>Latest registrations</h6><div id="recent"></div></div></div>
+      </div>
+    </section>
+    <section class="sec" id="sec-events">
+      <div class="d-flex justify-content-between align-items-center mb-3"><h2 class="m-0">Events</h2><button class="btn btn-glow" id="newEv"><i class="bi bi-plus-lg me-1"></i>New event</button></div>
+      <div class="glass p-3 table-responsive"><table class="tbl"><thead><tr><th>Event</th><th>Date</th><th>Venue</th><th>Seats</th><th></th></tr></thead><tbody id="evBody"></tbody></table></div>
+    </section>
+    <section class="sec" id="sec-students">
+      <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3"><h2 class="m-0">Students</h2><input id="sq" class="form-control" style="max-width:280px" placeholder="Search name, roll, email..."></div>
+      <div class="glass p-3 table-responsive"><table class="tbl"><thead><tr><th>Student</th><th>Roll no</th><th>Dept</th><th>Mobile</th><th>Status</th><th></th></tr></thead><tbody id="stBody"></tbody></table></div>
+    </section>
+    <section class="sec" id="sec-regs">
+      <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3"><h2 class="m-0">Registrations</h2><div class="d-flex gap-2"><select id="rf" class="form-select"></select><button class="btn btn-ghost" id="csv"><i class="bi bi-download me-1"></i>Export CSV</button></div></div>
+      <div class="glass p-3 table-responsive"><table class="tbl"><thead><tr><th>Student</th><th>Roll no</th><th>Event</th><th>Registered</th><th></th></tr></thead><tbody id="rgBody"></tbody></table></div>
+    </section>
+  </main>
+</div>
+<div class="modal fade" id="evModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><form class="modal-content" id="evForm" novalidate>
+  <div class="modal-header"><h5 class="modal-title" id="mt">New event</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body"><div class="row g-3">
+    <div class="col-12"><label class="form-label">Title</label><input id="e-title" class="form-control" maxlength="80"><div class="invalid-feedback">Title needs 3-80 characters</div></div>
+    <div class="col-6"><label class="form-label">Category</label><select id="e-cat" class="form-select"><option>Tech</option><option>Cultural</option><option>Sports</option><option>Workshop</option><option>Seminar</option><option>Other</option></select></div>
+    <div class="col-6"><label class="form-label">Seats</label><input id="e-cap" type="number" min="1" max="10000" class="form-control"><div class="invalid-feedback">Enter seats from 1 to 10000</div></div>
+    <div class="col-6"><label class="form-label">Date and time</label><input id="e-date" type="datetime-local" class="form-control"><div class="invalid-feedback">Pick a date and time</div></div>
+    <div class="col-6"><label class="form-label">Venue</label><input id="e-venue" class="form-control" maxlength="60"><div class="invalid-feedback">Venue is required</div></div>
+    <div class="col-12"><label class="form-label">Description</label><textarea id="e-desc" rows="3" class="form-control" maxlength="400"></textarea><div class="invalid-feedback">Add a short description (10+ characters)</div></div>
+  </div></div>
+  <div class="modal-footer"><button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button><button class="btn btn-glow">Save event</button></div>
+</form></div></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script type="module" src="js/admin.js"></script>
+</body></html>
